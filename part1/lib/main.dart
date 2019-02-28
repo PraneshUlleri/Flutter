@@ -25,7 +25,7 @@ class RandomWords extends StatefulWidget {
   RandomWordsState createState() => new RandomWordsState();
 }
 
-class RandomWordState extends State<RandomWords>{
+class RandomWordsState extends State<RandomWords>{
   @override
   Widget build(BuildContext context) {
     final WordPair wordPair = new WordPair.random();
