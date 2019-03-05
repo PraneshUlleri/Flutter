@@ -7,7 +7,9 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return new MaterialApp(theme: new ThemeData(          // Add the 3 lines from here...
+      primaryColor: Colors.red,
+    ),
       title: 'Startup Name Generator',
       home: new RandomWords(),
     );
@@ -61,8 +63,8 @@ class RandomWordsState extends State<RandomWords> {
         style: _biggerFont,
       ),
       trailing: new Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
+        alreadySaved ? Icons.battery_full : Icons.favorite_border,
+        color: alreadySaved ? Colors.green : null,
       ),
       onTap: () {
         setState(() {
