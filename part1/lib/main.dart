@@ -1,33 +1,27 @@
+
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-void main() => runApp(MyApp());
+
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-     title: 'Welcome to Flutter',
-        home: new Scaffold(
-        appBar: new AppBar(
-        title: const Text('Welcome to Flutter'),
-     ),
-
-         body: new Center(
-           child: new RandomWords(),
-          ),
-        ),
+      title: 'Startup Name Generator',
+      home: new RandomWords(),
     );
+  }
 }
-}
+
 class RandomWords extends StatefulWidget {
   @override
   RandomWordsState createState() => new RandomWordsState();
 }
 
-class RandomWordsState extends State<RandomWords>{
+class RandomWordsState extends State<RandomWords> {
   final List<WordPair> _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = new Set<WordPair>();   // Add this line.
+  final Set<WordPair> _saved = new Set<WordPair>();
   final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -35,6 +29,9 @@ class RandomWordsState extends State<RandomWords>{
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('Startup Name Generator'),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -56,27 +53,58 @@ class RandomWordsState extends State<RandomWords>{
   }
 
   Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);  // Add this line.
+    final bool alreadySaved = _saved.contains(pair);
 
     return new ListTile(
       title: new Text(
         pair.asPascalCase,
         style: _biggerFont,
       ),
-    trailing: new Icon(   // Add the lines from here...
-    alreadySaved ? Icons.favorite : Icons.favorite_border,
-    color: alreadySaved ? Colors.red : null,
-    ),
-      onTap:(){
+      trailing: new Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+      ),
+      onTap: () {
         setState(() {
-          if (alreadySaved){
+          if (alreadySaved) {
             _saved.remove(pair);
-          }
-          else {
+          } else {
             _saved.add(pair);
           }
         });
-      }
+      },
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _saved.map(
+                (WordPair pair) {
+              return new ListTile(
+                title: new Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                ),
+              );
+            },
+          );
+          final List<Widget> divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          )
+              .toList();
+          return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('Saved Suggestions'),
+            ),
+            body: new ListView(children: divided),
+          );
+
+        },
+      ),
     );
   }
 }
