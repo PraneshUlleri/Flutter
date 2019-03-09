@@ -64,7 +64,7 @@ class RandomWordsState extends State<RandomWords> {
       ),
       trailing: new Icon(
         alreadySaved ? Icons.battery_full : Icons.favorite_border,
-        color: alreadySaved ? Colors.green : null,
+        color: alreadySaved ? Colors.green   : null,
       ),
       onTap: () {
         setState(() {
